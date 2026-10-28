@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cement & Concrete School of Technology | Course Registration & Portal</title>
+  <style>
+    :root {
+      --primary-dark: #2D3748;
+      --accent-green: #8CBF3F;
+      --accent-green-hover: #7AA834;
+      --bg-light: #F7FAFC;
+      --card-bg: #FFFFFF;
+      --text-main: #2D3748;
+      --text-muted: #718096;
+      --border-color: #E2E8F0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-main); line-height: 1.6; }
+
+    header {
+      background-color: #FFFFFF;
+      border-bottom: 3px solid var(--accent-green);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .logo-container { display: flex; align-items: center; gap: 15px; }
+    .logo-svg { width: 70px; height: 70px; }
+    .logo-text h1 { font-size: 1.4rem; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 1px; }
+    .logo-text p { font-size: 0.85rem; color: var(--accent-green); font-weight: bold; letter-spacing: 2px; }
+
+    nav { background: var(--primary-dark); display: flex; padding: 0 40px; gap: 10px; }
+    nav button {
+      background: none; border: none; color: #FFF; padding: 15px 25px;
+      font-size: 1rem; cursor: pointer; border-bottom: 4px solid transparent;
+      transition: all 0.3s ease;
+    }
+    nav button:hover, nav button.active {
+      border-bottom-color: var(--accent-green);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .card {
+      background: var(--card-bg); border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border-color);
+      padding: 30px; margin-bottom: 25px;
+    }
+    .card h2 { color: var(--primary-dark); margin-bottom: 20px; border-bottom: 2px solid var(--accent-green); padding-bottom: 8px; }
+
+    .venue-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 15px; }
+    .venue-card { background: #F8FAFC; border: 1px solid var(--border-color); border-left: 4px solid var(--accent-green); border-radius: 6px; padding: 20px; }
+    .venue-card h4 { color: var(--primary-dark); margin-bottom: 8px; font-size: 1.05rem; }
+    .venue-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+    .course-card {
+      border: 1px solid var(--border-color); border-radius: 6px; padding: 22px;
+      background: #FFF; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .course-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+    .course-card h3 { color: var(--primary-dark); font-size: 1.15rem; margin-bottom: 10px; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px; }
+    
+    .course-badge-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+    .badge { font-size: 0.8rem; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+    .badge-price { background-color: #EBF8FF; color: #2B6CB0; border: 1px solid #BEE3F8; }
+    .badge-date { background-color: #FEFCBF; color: #744210; border: 1px solid #FAF089; }
+    .badge-venue { background-color: #F0FFF4; color: #276749; border: 1px solid #C6F6D5; }
+
+    .course-description { font-size: 0.9rem; color: #4A5568; margin-bottom: 12px; font-style: italic; }
+    .syllabus-header { font-size: 0.85rem; font-weight: bold; text-transform: uppercase; color: var(--accent-green); margin-bottom: 6px; }
+    .syllabus-list { font-size: 0.88rem; padding-left: 18px; color: var(--text-muted); margin-bottom: 10px; }
+    .syllabus-list li { margin-bottom: 4px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-green); }
+
+    .amount-highlight {
+      background-color: #F0FFF4;
+      border: 1px solid #C6F6D5;
+      color: #22543D;
+      font-weight: bold;
+    }
+
+    /* Terms and Conditions Box */
+    .terms-box {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E0;
+      border-left: 5px solid var(--accent-green);
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .terms-box h4 { color: var(--primary-dark); margin-bottom: 10px; }
+    .terms-box ul { padding-left: 20px; color: #4A5568; margin-bottom: 15px; }
+    .terms-box ul li { margin-bottom: 6px; }
+
+    .file-upload-card {
+      background: #F8FAFC; border: 2px dashed var(--accent-green); border-radius: 6px;
+      padding: 15px; text-align: center; margin-bottom: 10px;
+    }
+    .file-upload-card label { display: block; font-weight: bold; color: var(--primary-dark); margin-bottom: 5px; }
+    .file-hint { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+
+    .btn {
+      background-color: var(--accent-green); color: white; border: none;
+      padding: 12px 24px; border-radius: 4px; font-size: 1rem; font-weight: bold;
+      cursor: pointer; transition: background-color 0.2s;
+    }
+    .btn:hover { background-color: var(--accent-green-hover); }
+    .btn-secondary { background-color: var(--primary-dark); }
+    .btn-secondary:hover { background-color: #1A202C; }
+    .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+    th { background-color: var(--primary-dark); color: white; }
+
+    .admin-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    
+    .sub-nav { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+    .sub-nav button { background: none; border: none; padding: 8px 16px; font-weight: bold; cursor: pointer; color: var(--text-muted); border-radius: 4px; }
+    .sub-nav button.active { background-color: var(--accent-green); color: white; }
+
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;
+    }
+    .modal-card {
+      background: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 800px;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 40 100 A 60 60 0 0 1 160 100" fill="none" stroke="#718096" stroke-width="6" stroke-dasharray="3,3" />
+        <g fill="#8CBF3F">
+          <rect x="50" y="70" width="20" height="8" rx="2" />
+          <rect x="75" y="70" width="20" height="8" rx="2" />
+          <rect x="100" y="70" width="20" height="8" rx="2" />
+          <rect x="125" y="70" width="20" height="8" rx="2" />
+          <rect x="50" y="122" width="20" height="8" rx="2" />
+          <rect x="75" y="122" width="20" height="8" rx="2" />
+          <rect x="100" y="122" width="20" height="8" rx="2" />
+          <rect x="125" y="122" width="20" height="8" rx="2" />
+        </g>
+        <text x="100" y="110" font-family="'Segoe UI', sans-serif" font-weight="bold" font-size="34" fill="#4A5568" text-anchor="middle">CCST</text>
+        <path d="M 40 100 A 60 60 0 0 0 160 100" fill="none" stroke="#718096" stroke-width="6" stroke-dasharray="3,3" />
+      </svg>
+      <div class="logo-text">
+        <h1>Cement & Concrete</h1>
+        <p>School of Technology</p>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('courses')">Courses & Syllabi</button>
+    <button class="nav-btn" onclick="switchTab('apply')">Online Application</button>
+    <button class="nav-btn" onclick="switchTab('supervisor')">Supervisor Only</button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: COURSES -->
+    <section id="courses" class="tab-content active">
+      
+      <!-- TRAINING CENTRES SECTION -->
+      <div class="card">
+        <h2>Official CCST Training Centres</h2>
+        <div class="venue-grid">
+          <div class="venue-card">
+            <h4>Gauteng - Jukskei Quarry (Midrand)</h4>
+            <p>AfriSam Aggregate, Corner Old Pretoria Rd & Bridal Veil Rd, Midrand, 1682</p>
+          </div>
+          <div class="venue-card">
+            <h4>Gauteng - Roodepoort Plant</h4>
+            <p>AfriSam Training Development Centre, 2624 Main Reef Rd, Vogelstruisfontein, Roodepoort, 1724</p>
+          </div>
+          <div class="venue-card">
+            <h4>KZN & Cape Town Centres</h4>
+            <p>Venues confirmed with registered delegates prior to course commencement.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAILED COURSE CARDS -->
+      <div class="card">
+        <h2>Course Syllabi, Pricing & Schedule</h2>
+        <div class="course-grid">
+
+          <!-- SCT 10 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 10: Introduction to Concrete</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R4,500 ex VAT (R5,175.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 17-18 Feb | 14-15 Apr | 09-10 Jun | 11-12 Aug | 13-14 Oct</span>
+                <span class="badge badge-venue">Venue: Midrand / Cape Town / Durban</span>
+              </div>
+              <p class="course-description">Recommended for SMMEs, junior technical and sales staff in building and construction, and anyone wanting a short introduction to concrete. Requires English literacy.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Properties of fresh and hardened concrete</li>
+                <li>Materials for concrete: cement, aggregates, water, and admixtures</li>
+                <li>Receiving, site handling, and storing materials</li>
+                <li>Batching, mixing, and standard quality testing</li>
+                <li>Transporting, placing, and compacting techniques</li>
+                <li>Finishing methods and surface preparation</li>
+                <li>Protection and curing principles</li>
+                <li>Formwork erection and reinforcement placement</li>
+                <li>Sand-cement mixes and mortar basics</li>
+                <li>Durability factors and environmental exposure</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 12 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 12: Mortars, Plasters, Screeds & Masonry</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R2,800 ex VAT (R3,220.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 19 Feb | 16 Apr | 11 Jun | 13 Aug | 15 Oct</span>
+                <span class="badge badge-venue">Venue: Midrand / Cape Town / Durban</span>
+              </div>
+              <p class="course-description">Developed to assist NHBRC inspectors and contractors interpret the requirements of the NHBRC Home Builders Manual.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Factors that affect the strength and durability of concrete</li>
+                <li>Role and selection of cement, sand, stone, and water</li>
+                <li>Receiving, site storage, and stock control of materials</li>
+                <li>Mix proportions for concrete foundations and floor slabs</li>
+                <li>Floor screeds: preparation, bonding, laying, and curing</li>
+                <li>Slump test and cube test procedures and interpretation</li>
+                <li>Concrete and clay masonry: expansion and shrinkage characteristics</li>
+                <li>Cavity walls, block walls, and movement joint necessity</li>
+                <li>Properties of mortar and plaster; sand-cement mixes</li>
+                <li>Common causes of cracking in render and masonry and prevention</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 13 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 13: Making Concrete Bricks & Blocks</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R2,800 ex VAT (R3,220.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 20 Feb | 17 Apr | 12 Jun | 14 Aug | 16 Oct</span>
+                <span class="badge badge-venue">Venue: Midrand / Cape Town / Durban</span>
+              </div>
+              <p class="course-description">Assists with empowering learners by providing a practical understanding of manufacturing quality masonry units.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Essential structural requirements of masonry units</li>
+                <li>Cement hydration principles and how to make masonry strong</li>
+                <li>Quantity of water necessary for optimal workability</li>
+                <li>Operation and maintenance of blockmaking machines</li>
+                <li>Selection of raw materials and optimum mix proportions</li>
+                <li>Curing protocols for newly manufactured blocks</li>
+                <li>Raw material storage and aggregate protection</li>
+                <li>Sand-cement mix ratios and moisture control</li>
+                <li>Compressive strength testing of masonry units</li>
+                <li>Building practices with masonry to minimise structural cracking</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 14 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 14: Concrete for RMC Truck Drivers</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R2,500 ex VAT (R2,875.00 incl VAT)</span>
+                <span class="badge badge-date">Date: On Demand / Custom Request</span>
+                <span class="badge badge-venue">Venue: Midrand / On-Site</span>
+              </div>
+              <p class="course-description">Provides Ready Mix Concrete (RMC) truck drivers with basic concrete technology and emphasizes customer representation.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Primary factors affecting concrete strength</li>
+                <li>Bleeding, workability, cohesion, and segregation phenomena</li>
+                <li>The slump test: step-by-step execution and practical meaning</li>
+                <li>The cube test: making sample cubes correctly on site</li>
+                <li>Hot and cold weather effects on concrete during transit</li>
+                <li>Delays, contamination, or spillage risks during transport</li>
+                <li>Site access evaluation and discharge safety</li>
+                <li>The detrimental effects of unauthorised water addition</li>
+                <li>Handling concrete transport around site after discharge</li>
+                <li>Customer relations, site etiquette, and truck washout procedures</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 15 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 15: Concrete for Batchers & Plant Staff</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R2,800 ex VAT (R3,220.00 incl VAT)</span>
+                <span class="badge badge-date">Date: On Demand / Custom Request</span>
+                <span class="badge badge-venue">Venue: Midrand / On-Site</span>
+              </div>
+              <p class="course-description">Essential concrete education and theory required for batchers and plant operators to produce quality ready mix concrete.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Responsibilities and duty of care of a concrete batcher</li>
+                <li>Constituent materials and their specific effects on concrete performance</li>
+                <li>Fresh concrete properties and mandatory compliance tests</li>
+                <li>Basics of mix design and total water content control</li>
+                <li>Testing protocols for hardened concrete properties</li>
+                <li>Client requirements, specifications, and customer satisfaction</li>
+                <li>Basic batch plant management, quality control, and assurance</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 20 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 20: Concrete Practice</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R9,800 ex VAT (R11,270.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 09-12 Mar | 18-21 May | 20-23 Jul | 14-17 Sep | 16-19 Nov</span>
+                <span class="badge badge-venue">Venue: Midrand / Cape Town / Durban (4 CPD Points)</span>
+              </div>
+              <p class="course-description">Recommended for foremen, clerks-of-work, technicians, and supervisors. Minimum entrance: Grade 10 and basic arithmetic.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Properties of fresh, early age, and hardened concrete</li>
+                <li>Materials for concrete: cements, aggregates, admixtures</li>
+                <li>Mix proportions, yield calculations, and quantities</li>
+                <li>Concrete production, batching plant, and site mixing</li>
+                <li>Transporting, placing, compacting, protection, and curing</li>
+                <li>Formwork design principles, strike times, and reinforcement detailing</li>
+                <li>Joint types, construction joints, and sealing practices</li>
+                <li>Sand-cement mixes, low-density concrete, and prestressed/precast units</li>
+                <li>Concreting in hot and cold weather; surface defects and repairs</li>
+                <li>Off-shutter architectural finishes, sampling, and compliance testing</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 21 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 21: Concrete Industrial Floors on Ground</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R3,200 ex VAT (R3,680.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 24 Mar | 26 May | 28 Jul | 22 Sep</span>
+                <span class="badge badge-venue">Venue: Midrand / Online (1 CPD Point)</span>
+              </div>
+              <p class="course-description">Gives engineers and contractors a detailed and practical overview of industrial floor design and construction. Entrance: Grade 12.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Concrete pavement design philosophy, subgrades, and subbases</li>
+                <li>Damp-proofing membranes and sub-slab friction control</li>
+                <li>Joint design: construction, contraction, isolation joints, and dowel placement</li>
+                <li>Concrete production, placing, and side form setup</li>
+                <li>Advanced construction methods: vacuum dewatering, edging, and laser screeding</li>
+                <li>Finishing techniques, joint sawing schedules, and joint sealants</li>
+                <li>Surface treatments, dry-shake hardeners, toppings, and curing protocols</li>
+                <li>Adverse weather precautions and special floor applications</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 22 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 22: Concrete Road Design & Construction</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R3,500 ex VAT (R4,025.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 25 Mar | 27 May | 29 Jul | 23 Sep</span>
+                <span class="badge badge-venue">Venue: Midrand / SARF Administered (1 CPD Point)</span>
+              </div>
+              <p class="course-description">Focuses on technology applied in rigid pavement design and construction using cncPave software. Degree/Diploma recommended.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Rigid pavement types, structural behavior, and failure modes</li>
+                <li>Subgrade, subbase, and subsurface drainage design</li>
+                <li>Mechanistic thickness design using computer program cncPave</li>
+                <li>Concrete materials, mix design, and flexural strength target setting</li>
+                <li>Joint load transfer, joint layout, sealants, and reinforcement detailing</li>
+                <li>Mechanised paving (slipform) vs. labour-intensive road construction</li>
+                <li>Inlays, overlays, low-volume concrete roads, and rehabilitation techniques</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 30 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 30: Concrete Technology</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R12,500 ex VAT (R14,375.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 02-06 Mar | 11-15 May | 13-17 Jul | 07-11 Sep | 09-13 Nov</span>
+                <span class="badge badge-venue">Venue: Midrand / Cape Town (5 CPD Points)</span>
+              </div>
+              <p class="course-description">Intensive course for engineers and technologists. Recommended for mining/electrical/mechanical engineers. Entrance: Grade 12 (Maths/Science) + 2 yrs experience.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>In-depth properties of fresh, early age, and hardened concrete</li>
+                <li>Cementitious materials, extenders (fly ash, slag, silica fume), and aggregate chemistry</li>
+                <li>Mixing water quality and chemical admixture mechanisms</li>
+                <li>Comprehensive concrete mix design calculations</li>
+                <li>Concrete production, placing, compaction, formwork pressures, and curing</li>
+                <li>Reinforcement, joint design, defects, blemishes, and repair methods</li>
+                <li>Specialised mix designs, sand-cement mixes, and architectural concrete</li>
+                <li>Temperature effects and thermal cracking controls in mass concrete</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 37 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 37: Durability of Concrete</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R3,200 ex VAT (R3,680.00 incl VAT)</span>
+                <span class="badge badge-date">Date: 26 Mar | 28 May | 30 Jul | 24 Sep</span>
+                <span class="badge badge-venue">Venue: Midrand / Online (1 CPD Point)</span>
+              </div>
+              <p class="course-description">Overview of concrete durability for engineers, technologists, and foremen involved in specifying or placing durable concrete.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>How cement hydrates and works to ensure low permeability</li>
+                <li>Mechanisms of mechanical deterioration (abrasion, erosion, cavitation)</li>
+                <li>Mechanisms of chemical deterioration (carbonation, chloride ingress, sulphate attack, ASR)</li>
+                <li>Practical methods of making concrete impermeable and resilient</li>
+                <li>Durability testing methods: oxygen permeability, sorptivity, and chloride conductivity</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SCT 41 & 42 -->
+          <div class="course-card">
+            <div>
+              <h3>SCT 41 & 42: ICT Stage 2 & 3 (General & Practical)</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R14,000 per stage ex VAT (R16,100.00 incl VAT)</span>
+                <span class="badge badge-date">Date: Self-Study | Revision: April 2026 | Exams: May & Oct 2026</span>
+                <span class="badge badge-venue">Venue: E-Learning (Exams in Midrand)</span>
+              </div>
+              <p class="course-description">Bridging courses offered by the Institute of Concrete Technology (London). Prerequisite for ACT 50 Diploma.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>SCT 41 (Stage 2): General Principles of Concrete Technology (Part 1)</li>
+                <li>SCT 42 (Stage 3): Practical Applications of Concrete Technology (Part 2)</li>
+                <li>Includes 36 self-study lessons covering all ICT London requirements</li>
+                <li>Specialist lecturer supervision, guidance, and input via email</li>
+                <li>Compulsory online revision workshops prior to examinations</li>
+                <li>Preparation using compilation of ICT past examination papers</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ACT 50 -->
+          <div class="course-card">
+            <div>
+              <h3>ACT 50: Advanced Concrete Technology</h3>
+              <div class="course-badge-container">
+                <span class="badge badge-price">Price: R16,500 per module ex VAT (R18,975.00 incl VAT)</span>
+                <span class="badge badge-date">Date: Year-Round Open Registration</span>
+                <span class="badge badge-venue">Venue: Modular Self-Study (ICT Stage 4)</span>
+              </div>
+              <p class="course-description">Leading worldwide qualification in concrete technology examined by ICT London. Set text: Fulton’s 10th Edition. Requires pass in SCT 41 & 42.</p>
+              <div class="syllabus-header">Full Syllabus</div>
+              <ul class="syllabus-list">
+                <li>Module 1: Materials and Mixes (Cementitious chemistry, aggregates, admixtures)</li>
+                <li>Module 2: Concrete Properties (Microstructure, rheology, mechanical performance)</li>
+                <li>Module 3: Concrete Manufacture, Site Practices, Quality Control & NDT</li>
+                <li>Module 4: Concrete Sustainability, Environmental Stewardship & Statistics</li>
+                <li>Module 5: Advanced Concrete Technology Individual Project</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: APPLICATION FORM -->
+    <section id="apply" class="tab-content">
+      <div class="card">
+        <h2>Course Registration Application</h2>
+        
+        <p style="margin-bottom: 20px; font-weight: bold; color: var(--accent-green);">
+          Applications are e-mailed to: ccst@321done.net
+        </p>
+
+        <form id="registrationForm" onsubmit="handleFormSubmit(event)">
+          
+          <h3 style="margin: 15px 0; color: var(--accent-green);">1. Select Course, Location & Pricing</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="courseSelect">Select Course *</label>
+              <select id="courseSelect" onchange="updateCourseDetails()" required>
+                <option value="">-- Choose a Course --</option>
+                <option value="SCT 10">SCT 10: Introduction to Concrete</option>
+                <option value="SCT 12">SCT 12: Mortars, Plasters, Screeds & Masonry</option>
+                <option value="SCT 13">SCT 13: Making Concrete Bricks & Blocks</option>
+                <option value="SCT 14">SCT 14: Concrete for RMC Truck Drivers</option>
+                <option value="SCT 15">SCT 15: Concrete for Batchers & Plant Staff</option>
+                <option value="SCT 20">SCT 20: Concrete Practice</option>
+                <option value="SCT 21">SCT 21: Concrete Industrial Floors</option>
+                <option value="SCT 22">SCT 22: Concrete Road Design</option>
+                <option value="SCT 30">SCT 30: Concrete Technology</option>
+                <option value="SCT 37">SCT 37: Durability of Concrete</option>
+                <option value="SCT 41">SCT 41: General Principles (ICT Stage 2)</option>
+                <option value="SCT 42">SCT 42: Practical Applications (ICT Stage 3)</option>
+                <option value="ACT 50">ACT 50: Advanced Concrete Technology</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="courseDate">Date of Course *</label>
+              <select id="courseDate" required>
+                <option value="">-- First Select a Course --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="trainingCentre">Training Centre *</label>
+              <select id="trainingCentre" required>
+                <option value="">-- Choose Location --</option>
+                <option value="Cape Town">Cape Town</option>
+                <option value="Midrand">Midrand</option>
+                <option value="Durban">Durban</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="amountPayable">Amount Payable (Calculated) *</label>
+              <input type="text" id="amountPayable" class="amount-highlight" readonly placeholder="Calculated automatically" required />
+            </div>
+          </div>
+
+          <h3 style="margin: 15px 0; color: var(--accent-green);">2. Delegate Details</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="surname">Surname *</label>
+              <input type="text" id="surname" required />
+            </div>
+            <div class="form-group">
+              <label for="idNumber">ID Number *</label>
+              <input type="text" id="idNumber" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+              <label for="cellNo">Cell Phone Number *</label>
+              <input type="tel" id="cellNo" required />
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <h3 style="margin: 15px 0; color: var(--accent-green);">3. Company & Invoicing Details</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="companyName">Company Name *</label>
+              <input type="text" id="companyName" required />
+            </div>
+            <div class="form-group">
+              <label for="vatNo">Company VAT Number</label>
+              <input type="text" id="vatNo" />
+            </div>
+            <div class="form-group">
+              <label for="paymentPerson">Person Responsible for Payment</label>
+              <input type="text" id="paymentPerson" />
+            </div>
+          </div>
+
+          <!-- TERMS AND CONDITIONS SECTION -->
+          <h3 style="margin: 20px 0 15px 0; color: var(--accent-green);">4. Terms and Conditions & Approval</h3>
+          <div class="terms-box">
+            <h4>Important Registration Terms & Policies</h4>
+            <ul>
+              <li><strong>Payment Requirement:</strong> Payment (or proof thereof) must be received prior to training.</li>
+              <li><strong>Certificates:</strong> No certificates will be generated or issued until full proof of payment is receipted by the SCT Manager.</li>
+              <li><strong>Banking Details:</strong> First National Bank, Account Name: Cement and Concrete School of Technology NPC, Account No: 63107309999, Branch Code: 210835, SWIFT: FIRNZAJJ.</li>
+              <li><strong>VAT Registration Number:</strong> 4470321409.</li>
+              <li><strong>Fees & Cancellations:</strong> All fees are payable in advance. Cancellations less than five (5) business days prior to the course and non-attendance will result in a charge of 100% of the course price.</li>
+            </ul>
+
+            <div class="form-group" style="flex-direction: row; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+              <input type="checkbox" id="termsConsent" style="width: 20px; height: 20px; margin-top: 2px;" required />
+              <label for="termsConsent" style="font-weight: normal; color: var(--primary-dark);">
+                I have read, understood, and accept the Terms and Conditions above (including fees payable in advance; cancellations under five business days and non-attendance charged at 100%). *
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="signatureBlockLetters">Name in Block Letters (Acts as Digital Signature) *</label>
+              <input type="text" id="signatureBlockLetters" style="text-transform: uppercase;" placeholder="ENTER FULL NAME IN BLOCK LETTERS" required />
+            </div>
+          </div>
+
+          <h3 style="margin: 15px 0; color: var(--accent-green);">5. Payment Selection</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="paymentMethod">Method of Payment *</label>
+              <select id="paymentMethod" required>
+                <option value="EFT">EFT / Electronic Transfer</option>
+                <option value="Bank Deposit">Bank Deposit</option>
+                <option value="Cash">Cash</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- UPLOAD SECTION -->
+          <h3 style="margin: 20px 0 15px 0; color: var(--accent-green);">6. UPLOAD SECTION</h3>
+          <div class="form-grid">
+            <div class="file-upload-card">
+              <label for="idUpload">1. Upload Copy of your ID *</label>
+              <div class="file-hint">Accepted Formats: PDF, PNG, JPG (Max 5MB)</div>
+              <input type="file" id="idUpload" accept=".pdf, .png, .jpg, .jpeg" required />
+            </div>
+
+            <div class="file-upload-card">
+              <label for="popUpload">2. Upload your Proof of Payment *</label>
+              <div class="file-hint">Accepted Formats: PDF, PNG, JPG (Max 5MB)</div>
+              <input type="file" id="popUpload" accept=".pdf, .png, .jpg, .jpeg" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn" style="margin-top: 15px;">Submit Application & Email Copy</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 3: SUPERVISOR ONLY -->
+    <section id="supervisor" class="tab-content">
+      <div class="card" id="loginCard">
+        <h2>Supervisor Login</h2>
+        <p style="margin-bottom: 15px;">Please enter the supervisor access password:</p>
+        <div class="form-group" style="max-width: 300px; margin-bottom: 15px;">
+          <input type="password" id="supervisorPassword" placeholder="Enter password" />
+        </div>
+        <button class="btn" onclick="authenticateSupervisor()">Login</button>
+      </div>
+
+      <div class="card" id="supervisorPanel" style="display: none;">
+        <h2>Supervisor Administration Dashboard</h2>
+        
+        <div class="sub-nav">
+          <button id="viewDataSubBtn" class="active" onclick="switchSupervisorSubTab('viewData')">View Applications</button>
+          <button id="editDataSubBtn" onclick="switchSupervisorSubTab('editData')">Edit Data</button>
+        </div>
+
+        <div class="admin-actions">
+          <button class="btn" onclick="backupJSON()">a. Backup Data (JSON)</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('restoreInput').click()">b. Restore Data (JSON)</button>
+          <input type="file" id="restoreInput" style="display:none;" accept=".json" onchange="restoreJSON(event)" />
+          <button class="btn" onclick="exportCSV()">c. Export Data CSV</button>
+          <button class="btn btn-secondary" onclick="exportExcel()">d. Export Data Excel</button>
+          <button class="btn" onclick="printData()">e. Print All Data</button>
+        </div>
+
+        <div id="viewDataSubTab">
+          <h3>Registered Applications</h3>
+          <div style="overflow-x: auto;">
+            <table id="applicationsTable">
+              <thead>
+                <tr>
+                  <th>Reg. Date</th>
+                  <th>Course</th>
+                  <th>Course Date</th>
+                  <th>Centre</th>
+                  <th>Amount Payable</th>
+                  <th>Delegate Name</th>
+                  <th>ID Number</th>
+                  <th>Digital Signature</th>
+                  <th>Company</th>
+                  <th>ID File</th>
+                  <th>POP File</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dynamic Rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="editDataSubTab" style="display: none;">
+          <h3>Manage & Edit Application Data</h3>
+          <div style="overflow-x: auto;">
+            <table id="editTable">
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Course</th>
+                  <th>Delegate Name</th>
+                  <th>ID Number</th>
+                  <th>Email</th>
+                  <th>Company</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dynamic Editable Rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- EDIT DATA MODAL OVERLAY -->
+  <div id="editModal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 style="color: var(--primary-dark); margin-bottom: 15px;">Edit Delegate Application Record</h2>
+      <form id="editRecordForm" onsubmit="saveRecordEdit(event)">
+        <input type="hidden" id="editRecordIndex" />
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="editCourse">Course</label>
+            <input type="text" id="editCourse" required />
+          </div>
+          <div class="form-group">
+            <label for="editCourseDate">Course Date</label>
+            <input type="text" id="editCourseDate" required />
+          </div>
+          <div class="form-group">
+            <label for="editTrainingCentre">Training Centre</label>
+            <input type="text" id="editTrainingCentre" required />
+          </div>
+          <div class="form-group">
+            <label for="editAmountPayable">Amount Payable</label>
+            <input type="text" id="editAmountPayable" required />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="editFirstName">First Name</label>
+            <input type="text" id="editFirstName" required />
+          </div>
+          <div class="form-group">
+            <label for="editSurname">Surname</label>
+            <input type="text" id="editSurname" required />
+          </div>
+          <div class="form-group">
+            <label for="editIdNumber">ID Number</label>
+            <input type="text" id="editIdNumber" required />
+          </div>
+          <div class="form-group">
+            <label for="editEmail">Email Address</label>
+            <input type="email" id="editEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="editCellNo">Cell Phone</label>
+            <input type="text" id="editCellNo" required />
+          </div>
+          <div class="form-group">
+            <label for="editGender">Gender</label>
+            <input type="text" id="editGender" required />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="editCompanyName">Company Name</label>
+            <input type="text" id="editCompanyName" required />
+          </div>
+          <div class="form-group">
+            <label for="editVatNo">VAT Number</label>
+            <input type="text" id="editVatNo" />
+          </div>
+          <div class="form-group">
+            <label for="editPaymentPerson">Payment Person</label>
+            <input type="text" id="editPaymentPerson" />
+          </div>
+          <div class="form-group">
+            <label for="editPaymentMethod">Payment Method</label>
+            <input type="text" id="editPaymentMethod" />
+          </div>
+          <div class="form-group">
+            <label for="editSignatureBlockLetters">Block Letter Signature</label>
+            <input type="text" id="editSignatureBlockLetters" />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="editIdFileName">ID File Name</label>
+            <input type="text" id="editIdFileName" />
+          </div>
+          <div class="form-group">
+            <label for="editPopFileName">POP File Name</label>
+            <input type="text" id="editPopFileName" />
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="submit" class="btn">Save Changes</button>
+          <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const coursePrices = {
+      "SCT 10": "R4,500.00 ex VAT (R5,175.00 incl VAT)",
+      "SCT 12": "R2,800.00 ex VAT (R3,220.00 incl VAT)",
+      "SCT 13": "R2,800.00 ex VAT (R3,220.00 incl VAT)",
+      "SCT 14": "R2,500.00 ex VAT (R2,875.00 incl VAT)",
+      "SCT 15": "R2,800.00 ex VAT (R3,220.00 incl VAT)",
+      "SCT 20": "R9,800.00 ex VAT (R11,270.00 incl VAT)",
+      "SCT 21": "R3,200.00 ex VAT (R3,680.00 incl VAT)",
+      "SCT 22": "R3,500.00 ex VAT (R4,025.00 incl VAT)",
+      "SCT 30": "R12,500.00 ex VAT (R14,375.00 incl VAT)",
+      "SCT 37": "R3,200.00 ex VAT (R3,680.00 incl VAT)",
+      "SCT 41": "R14,000.00 ex VAT (R16,100.00 incl VAT)",
+      "SCT 42": "R14,000.00 ex VAT (R16,100.00 incl VAT)",
+      "ACT 50": "R16,500.00 per Module ex VAT (R18,975.00 incl VAT)"
+    };
+
+    const courseSchedule = {
+      "SCT 10": ["17 - 18 February 2026", "14 - 15 April 2026", "09 - 10 June 2026", "11 - 12 August 2026", "13 - 14 October 2026"],
+      "SCT 12": ["19 February 2026", "16 April 2026", "11 June 2026", "13 August 2026", "15 October 2026"],
+      "SCT 13": ["20 February 2026", "17 April 2026", "12 June 2026", "14 August 2026", "16 October 2026"],
+      "SCT 14": ["On Demand / Custom Request"],
+      "SCT 15": ["On Demand / Custom Request"],
+      "SCT 20": ["09 - 12 March 2026", "18 - 21 May 2026", "20 - 23 July 2026", "14 - 17 September 2026", "16 - 19 November 2026"],
+      "SCT 21": ["24 March 2026", "26 May 2026", "28 July 2026", "22 September 2026"],
+      "SCT 22": ["25 March 2026", "27 May 2026", "29 July 2026", "23 September 2026"],
+      "SCT 30": ["02 - 06 March 2026", "11 - 15 May 2026", "13 - 17 July 2026", "07 - 11 September 2026", "09 - 13 November 2026"],
+      "SCT 37": ["26 March 2026", "28 May 2026", "30 July 2026", "24 September 2026"],
+      "SCT 41": ["Self-Study (Exam: May 2026)", "Self-Study (Exam: Oct 2026)"],
+      "SCT 42": ["Self-Study (Exam: May 2026)", "Self-Study (Exam: Oct 2026)"],
+      "ACT 50": ["Modular Admission Open Year-Round"]
+    };
+
+    function updateCourseDetails() {
+      const courseSelect = document.getElementById('courseSelect').value;
+      const dateSelect = document.getElementById('courseDate');
+      const amountInput = document.getElementById('amountPayable');
+
+      dateSelect.innerHTML = '<option value="">-- Choose Course Date --</option>';
+
+      if (courseSelect && courseSchedule[courseSelect]) {
+        courseSchedule[courseSelect].forEach(dateStr => {
+          const opt = document.createElement('option');
+          opt.value = dateStr;
+          opt.textContent = dateStr;
+          dateSelect.appendChild(opt);
+        });
+
+        amountInput.value = coursePrices[courseSelect] || 'TBD';
+      } else {
+        dateSelect.innerHTML = '<option value="">-- First Select a Course --</option>';
+        amountInput.value = '';
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function getStoredData() {
+      return JSON.parse(localStorage.getItem('ccst_applications') || '[]');
+    }
+
+    function saveStoredData(data) {
+      localStorage.setItem('ccst_applications', JSON.stringify(data));
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const idFileInput = document.getElementById('idUpload');
+      const popFileInput = document.getElementById('popUpload');
+
+      const idFileName = idFileInput.files[0] ? idFileInput.files[0].name : 'Not Uploaded';
+      const popFileName = popFileInput.files[0] ? popFileInput.files[0].name : 'Not Uploaded';
+
+      const appData = {
+        date: new Date().toLocaleDateString(),
+        course: document.getElementById('courseSelect').value,
+        courseDate: document.getElementById('courseDate').value,
+        trainingCentre: document.getElementById('trainingCentre').value,
+        amountPayable: document.getElementById('amountPayable').value,
+        firstName: document.getElementById('firstName').value,
+        surname: document.getElementById('surname').value,
+        idNumber: document.getElementById('idNumber').value,
+        email: document.getElementById('email').value,
+        cellNo: document.getElementById('cellNo').value,
+        gender: document.getElementById('gender').value,
+        companyName: document.getElementById('companyName').value,
+        vatNo: document.getElementById('vatNo').value,
+        paymentPerson: document.getElementById('paymentPerson').value,
+        paymentMethod: document.getElementById('paymentMethod').value,
+        termsApproved: document.getElementById('termsConsent').checked ? 'YES' : 'NO',
+        signatureBlockLetters: document.getElementById('signatureBlockLetters').value,
+        idFileName: idFileName,
+        popFileName: popFileName
+      };
+
+      const existingData = getStoredData();
+      existingData.push(appData);
+      saveStoredData(existingData);
+
+      // Email Trigger
+      const mailSubject = encodeURIComponent(`CCST Registration: ${appData.course} (${appData.trainingCentre}) - ${appData.firstName} ${appData.surname}`);
+      const mailBody = encodeURIComponent(
+        `NEW COURSE APPLICATION REGISTRATION\n\n` +
+        `Course: ${appData.course}\n` +
+        `Selected Course Date: ${appData.courseDate}\n` +
+        `Training Centre Location: ${appData.trainingCentre}\n` +
+        `Amount Payable: ${appData.amountPayable}\n\n` +
+        `Delegate Name: ${appData.firstName} ${appData.surname}\n` +
+        `ID Number: ${appData.idNumber}\n` +
+        `Email: ${appData.email}\n` +
+        `Cell Phone: ${appData.cellNo}\n` +
+        `Gender: ${appData.gender}\n\n` +
+        `Company Name: ${appData.companyName}\n` +
+        `VAT No: ${appData.vatNo}\n` +
+        `Payment Responsible Person: ${appData.paymentPerson}\n` +
+        `Payment Method: ${appData.paymentMethod}\n\n` +
+        `TERMS & APPROVAL:\n` +
+        `Terms Accepted: ${appData.termsApproved}\n` +
+        `Block Letter Signature: ${appData.signatureBlockLetters}\n\n` +
+        `ATTACHMENT STATUS:\n` +
+        `1. ID Copy File: ${idFileName}\n` +
+        `2. Proof of Payment File: ${popFileName}\n\n` +
+        `Note: Please attach the uploaded files (${idFileName} and ${popFileName}) to this email before sending.`
+      );
+
+      window.location.href = `mailto:ccst@321done.net?subject=${mailSubject}&body=${mailBody}`;
+
+      alert('Application saved! Draft email generated for ccst@321done.net. Please remember to attach your ID copy and Proof of Payment files to the email draft.');
+      document.getElementById('registrationForm').reset();
+      document.getElementById('courseDate').innerHTML = '<option value="">-- First Select a Course --</option>';
+      document.getElementById('amountPayable').value = '';
+    }
+
+    function authenticateSupervisor() {
+      const pwd = document.getElementById('supervisorPassword').value;
+      if (pwd === 'christo') {
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('supervisorPanel').style.display = 'block';
+        loadSupervisorTable();
+        loadEditTable();
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    function switchSupervisorSubTab(tabName) {
+      if (tabName === 'viewData') {
+        document.getElementById('viewDataSubTab').style.display = 'block';
+        document.getElementById('editDataSubTab').style.display = 'none';
+        document.getElementById('viewDataSubBtn').classList.add('active');
+        document.getElementById('editDataSubBtn').classList.remove('active');
+      } else {
+        document.getElementById('viewDataSubTab').style.display = 'none';
+        document.getElementById('editDataSubTab').style.display = 'block';
+        document.getElementById('viewDataSubBtn').classList.remove('active');
+        document.getElementById('editDataSubBtn').classList.add('active');
+        loadEditTable();
+      }
+    }
+
+    function loadSupervisorTable() {
+      const data = getStoredData();
+      const tbody = document.querySelector('#applicationsTable tbody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">No applications registered yet.</td></tr>';
+        return;
+      }
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.date}</td>
+          <td>${item.course}</td>
+          <td>${item.courseDate || 'N/A'}</td>
+          <td>${item.trainingCentre || 'N/A'}</td>
+          <td>${item.amountPayable || 'N/A'}</td>
+          <td>${item.firstName} ${item.surname}</td>
+          <td>${item.idNumber}</td>
+          <td>${item.signatureBlockLetters || 'ACCEPTED'}</td>
+          <td>${item.companyName}</td>
+          <td>${item.idFileName || 'N/A'}</td>
+          <td>${item.popFileName || 'N/A'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function loadEditTable() {
+      const data = getStoredData();
+      const tbody = document.querySelector('#editTable tbody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No application records available to edit.</td></tr>';
+        return;
+      }
+
+      data.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>#${index + 1}</td>
+          <td>${item.course}</td>
+          <td>${item.firstName} ${item.surname}</td>
+          <td>${item.idNumber}</td>
+          <td>${item.email}</td>
+          <td>${item.companyName}</td>
+          <td>
+            <button class="btn btn-sm" onclick="openEditModal(${index})">Edit</button>
+            <button class="btn btn-sm btn-secondary" onclick="deleteRecord(${index})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openEditModal(index) {
+      const data = getStoredData();
+      const rec = data[index];
+      if (!rec) return;
+
+      document.getElementById('editRecordIndex').value = index;
+      document.getElementById('editCourse').value = rec.course || '';
+      document.getElementById('editCourseDate').value = rec.courseDate || '';
+      document.getElementById('editTrainingCentre').value = rec.trainingCentre || '';
+      document.getElementById('editAmountPayable').value = rec.amountPayable || '';
+      document.getElementById('editFirstName').value = rec.firstName || '';
+      document.getElementById('editSurname').value = rec.surname || '';
+      document.getElementById('editIdNumber').value = rec.idNumber || '';
+      document.getElementById('editEmail').value = rec.email || '';
+      document.getElementById('editCellNo').value = rec.cellNo || '';
+      document.getElementById('editGender').value = rec.gender || '';
+      document.getElementById('editCompanyName').value = rec.companyName || '';
+      document.getElementById('editVatNo').value = rec.vatNo || '';
+      document.getElementById('editPaymentPerson').value = rec.paymentPerson || '';
+      document.getElementById('editPaymentMethod').value = rec.paymentMethod || '';
+      document.getElementById('editSignatureBlockLetters').value = rec.signatureBlockLetters || '';
+      document.getElementById('editIdFileName').value = rec.idFileName || '';
+      document.getElementById('editPopFileName').value = rec.popFileName || '';
+
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    function saveRecordEdit(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('editRecordIndex').value);
+      const data = getStoredData();
+
+      if (data[index]) {
+        data[index] = {
+          ...data[index],
+          course: document.getElementById('editCourse').value,
+          courseDate: document.getElementById('editCourseDate').value,
+          trainingCentre: document.getElementById('editTrainingCentre').value,
+          amountPayable: document.getElementById('editAmountPayable').value,
+          firstName: document.getElementById('editFirstName').value,
+          surname: document.getElementById('editSurname').value,
+          idNumber: document.getElementById('editIdNumber').value,
+          email: document.getElementById('editEmail').value,
+          cellNo: document.getElementById('editCellNo').value,
+          gender: document.getElementById('editGender').value,
+          companyName: document.getElementById('editCompanyName').value,
+          vatNo: document.getElementById('editVatNo').value,
+          paymentPerson: document.getElementById('editPaymentPerson').value,
+          paymentMethod: document.getElementById('editPaymentMethod').value,
+          signatureBlockLetters: document.getElementById('editSignatureBlockLetters').value,
+          idFileName: document.getElementById('editIdFileName').value,
+          popFileName: document.getElementById('editPopFileName').value
+        };
+
+        saveStoredData(data);
+        loadSupervisorTable();
+        loadEditTable();
+        closeEditModal();
+        alert('Record updated successfully!');
+      }
+    }
+
+    function deleteRecord(index) {
+      if (confirm('Are you sure you want to delete this application record?')) {
+        const data = getStoredData();
+        data.splice(index, 1);
+        saveStoredData(data);
+        loadSupervisorTable();
+        loadEditTable();
+      }
+    }
+
+    function backupJSON() {
+      const data = localStorage.getItem('ccst_applications') || '[]';
+      const blob = new Blob([data], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `CCST_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    function restoreJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (Array.isArray(parsed)) {
+            saveStoredData(parsed);
+            loadSupervisorTable();
+            loadEditTable();
+            alert('Data backup successfully restored!');
+          } else {
+            alert('Invalid JSON structure.');
+          }
+        } catch (err) {
+          alert('Error reading JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function exportCSV() {
+      const data = getStoredData();
+      if (data.length === 0) { alert('No data to export!'); return; }
+
+      const headers = Object.keys(data[0]).join(',');
+      const rows = data.map(obj => Object.values(obj).map(val => `"${val}"`).join(','));
+      const csvContent = "data:text/csv;charset=utf-8," + [headers, ...rows].join("\n");
+
+      const encodedUri = encodeURI(csvContent);
+      const a = document.createElement('a');
+      a.href = encodedUri;
+      a.download = `CCST_Applications_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    }
+
+    function exportExcel() {
+      const data = getStoredData();
+      if (data.length === 0) { alert('No data to export!'); return; }
+
+      let tableHTML = "<table border='1'><tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join('') + "</tr>";
+      data.forEach(row => {
+        tableHTML += "<tr>" + Object.values(row).map(v => `<td>${v}</td>`).join('') + "</tr>";
+      });
+      tableHTML += "</table>";
+
+      const dataType = 'application/vnd.ms-excel';
+      const a = document.createElement('a');
+      a.href = `data:${dataType}, ${encodeURIComponent(tableHTML)}`;
+      a.download = `CCST_Applications_${new Date().toISOString().slice(0,10)}.xls`;
+      a.click();
+    }
+
+    function printData() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
